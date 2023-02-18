@@ -53,9 +53,13 @@ CREATE OR REPLACE PROCEDURE pr_generate_variants
 			var_query := regexp_replace(var_query, 'PT_HALL_ID', var_parametr);
 	when 'PT_DESC' then select (array['ASC', 'DESC'])[floor(random() * 2 + 1)] into var_parametr;
 			array_par = array_par || var_parametr;
-			var_text := regexp_replace(var_text, 'PT_DESC', var_parametr);
+			if var_parametr = 'ASC' THEN
+			var_text := regexp_replace(var_text, 'возрастания', var_parametr);
+			else
+			var_text := regexp_replace(var_text, 'убывания', var_parametr);
+			END IF;
 			var_query := regexp_replace(var_query, 'PT_DESC', var_parametr);
-	when 'PT_STARTS_ON' then select starts_on::varchar(20) into var_parametr from schedule order by random() limit 1;
+	when 'PT_STARTS_ON' then select starts_on::date::varchar(20) into var_parametr from schedule order by random() limit 1;
 			array_par = array_par || var_parametr;
 			var_text := regexp_replace(var_text, 'PT_STARTS_ON', var_parametr);
 			var_query := regexp_replace(var_query, 'PT_STARTS_ON', var_parametr);
