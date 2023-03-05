@@ -17,7 +17,7 @@ CREATE OR REPLACE PROCEDURE pr_generate_variants
    	SELECT template_query INTO var_query FROM template WHERE template_id = var_template_id;
    	WHILE i != num_of_par LOOP
 	i:= i + 1;
-   	SELECT REGEXP_SUBSTR(var_text, '(PT_\w+)') into param;
+   	SELECT REGEXP_SUBSTR(var_text, '(PT_\S+)') into param;
 	CASE param
 	when 'PT_FIRST_NAME' then select first_name into var_parametr from visitor order by random() limit 1;
 			array_par = array_par || var_parametr;
@@ -53,16 +53,24 @@ CREATE OR REPLACE PROCEDURE pr_generate_variants
 			var_query := regexp_replace(var_query, 'PT_HALL_ID', var_parametr);
 	when 'PT_DESC' then select (array['ASC', 'DESC'])[floor(random() * 2 + 1)] into var_parametr;
 			array_par = array_par || var_parametr;
-			if var_parametr = 'ASC' THEN
-			var_text := regexp_replace(var_text, 'возрастания', var_parametr);
-			else
-			var_text := regexp_replace(var_text, 'убывания', var_parametr);
+			IF var_parametr = 'ASC' THEN
+			var_text := regexp_replace(var_text, 'PT_DESC', 'возрастания');
+			ELSE
+			var_text := regexp_replace(var_text, 'PT_DESC', 'убывания');
 			END IF;
-			var_query := regexp_replace(var_query, 'PT_DESC', var_parametr);
+			var_query := regexp_replace(var_query, '''PT_DESC''', var_parametr);
 	when 'PT_STARTS_ON' then select starts_on::date::varchar(20) into var_parametr from schedule order by random() limit 1;
 			array_par = array_par || var_parametr;
 			var_text := regexp_replace(var_text, 'PT_STARTS_ON', var_parametr);
 			var_query := regexp_replace(var_query, 'PT_STARTS_ON', var_parametr);
+	when 'PT_STARTS_ON_1' then select starts_on::date::varchar(20) into var_parametr from schedule where schedule_id < (select max(schedule_id)/2 from schedule)order by random() limit 1;
+			array_par = array_par || var_parametr;
+			var_text := regexp_replace(var_text, 'PT_STARTS_ON_1', var_parametr);
+			var_query := regexp_replace(var_query, 'PT_STARTS_ON_1', var_parametr);
+	when 'PT_STARTS_ON_2' then select starts_on::date::varchar(20) into var_parametr from schedule where schedule_id > (select max(schedule_id)/2 from schedule) order by random() limit 1;
+			array_par = array_par || var_parametr;
+			var_text := regexp_replace(var_text, 'PT_STARTS_ON_2', var_parametr);
+			var_query := regexp_replace(var_query, 'PT_STARTS_ON_2', var_parametr);		
 	when 'PT_MUSEUM_ID' then select museum_id::varchar(7) into var_parametr from museum order by random() limit 1;
 			array_par = array_par || var_parametr;
 			var_text := regexp_replace(var_text, 'PT_MUSEUM_ID', var_parametr);
