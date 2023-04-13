@@ -26,7 +26,7 @@
 | Имя параметра	| Запрос |
 | --- | --- |
 |PT_FIRST_NAME |	SELECT first_name FROM visitor ORDER BY random() LIMIT 1 |
-|PT_STARTS_ON	| SELECT starts_on::date::varchar(20) FROM schedule ORDER BY random() LIMIT 1 |
+|PT_STARTS_ON	| SELECT starts_on\::date::varchar(20) FROM schedule ORDER BY random() LIMIT 1 |
 
 Параметры записываются в отдельную таблицу. Если в базе ещё не этой таблицы, будет предложено её создать.
 <details>
@@ -50,14 +50,14 @@
 </details>
 
 <a name="templ"> </a>
-#### Добавление шаблонов
+#### 3) Добавление шаблонов
 Далее необходимо добавить шаблоны. Шаблоны – задания, в которых на местах изменяемых значений записаны параметры. На основе шаблонов генерируются варианты. 
 Шаблоны включают шаблон текста задания, а также шаблон SQL-запроса, по которому можно найти правильный ответ.
 Например, 
 | Текст | Запрос | Сложность |
 | --- | --- | --- |
-|Выведите фамилии посетителей <br>с именем PT_FIRST_NAME или PT_FIRST_NAME | SELECT last_name FROM visitor<br>WHERE first_name = 'PT_FIRST_NAME' OR first_name = 'PT_FIRST_NAME'	| 2 |
-|Выведите минимальную цену <br>по которой проводились экскурсии PT_STARTS_ON	| SELECT MIN(excursion.price) FROM excursion, schedule <br>WHERE excursion.excursion_id = schedule.excursion_id <br>AND schedule.starts_on ::text LIKE PT_STARTS_ON%	| 7 |
+|Выведите фамилии посетителей <br>с именем PT_FIRST_NAME или PT_FIRST_NAME | `SELECT last_name FROM visitor<br>WHERE first_name = 'PT_FIRST_NAME' OR first_name = 'PT_FIRST_NAME'`	| 2 |
+|Выведите минимальную цену <br>по которой проводились экскурсии PT_STARTS_ON	| `SELECT MIN(excursion.price) FROM excursion, schedule <br>WHERE excursion.excursion_id = schedule.excursion_id <br>AND schedule.starts_on ::text LIKE PT_STARTS_ON%`	| 7 |
 
 Шаблоны записываются в отдельную таблицу. Если в базе ещё нет этой таблицы, будет предложено её создать. 
 <details>
@@ -79,6 +79,7 @@
 </details>
 <a name="var"></a>
 #### 4) Генерация и выгрузка вариантов
+
 Теперь можно генерировать и выгружать варианты.
 Варианты – конкретные задания, созданные по шаблонам, а также ответы к ним.
 Варианты записываются в отдельную таблицу. Если в базе ещё нет этой таблицы, будет предложено её создать. 
