@@ -1,0 +1,56 @@
+PT_FIRST_NAME
+select first_name from visitor order by random() limit 1
+
+PT_VISITOR_ID
+select visitor_id::varchar(7) from visitor order by random() limit 1
+
+PT_AUTHOR
+select author from exhibit where author IS NOT NULL order by random() limit 1
+
+PT_YEAR_OF_CREATION
+select year_of_creation::varchar(7) from exhibit where year_of_creation IS NOT NULL order by random() limit 1
+
+PT_PRICE
+select price::varchar(7) from excursion order by random() limit 1
+
+PT_LIMIT
+select (array[4, 5, 6, 7])[floor(random() * 2 + 1)]::varchar(1)
+
+PT_DESC
+select (array['ASC', 'DESC'])[floor(random() * 2 + 1)]
+
+PT_EXHIBIT_NAME
+select exhibit_name from exhibit order by random() limit 1
+
+PT_ROUND
+select (array['2', '3', '4'])[floor(random() * 2 + 1)]
+
+PT_EXCURDION_ID
+select excursion_id::varchar(7) from excursion order by random() limit 1
+
+PT_EXCURSION_NAME
+select excursion_name from excursion order by random() limit 1
+
+PT_MUSEUM_ID
+select museum_id::varchar(7) from museum order by random() limit 1
+
+PT_HALL_ID
+select hall_id::varchar(7) into var_parametr from hall order by random() limit 1
+
+PT_STARTS_ON
+select starts_on::date::varchar(20) from schedule order by random() limit 1
+
+PT_STARTS_ON_1
+select starts_on::date::varchar(20) into var_parametr from schedule where schedule_id < (select max(schedule_id)/2 from schedule)order by random() limit 1
+
+PT_STARTS_ON_2
+select starts_on::date::varchar(20) into var_parametr from schedule where schedule_id > (select max(schedule_id)/2 from schedule) order by random() limit 1
+
+PT_LETTER
+select (array['А', 'Б', 'В', 'Г', 'Д', 'Е','Ж', 'З', 'К','Л', 'М', 'Н','О', 'П', 'Р', 'С', 'Т', 'У','Ф', 'Ш', 'Э','Ю', 'Я'])[floor(random() * 23 + 1)]
+
+PT_COUNTRY_OF_CREATION
+select country_of_creation from exibit order by random() limit 1
+
+
+
