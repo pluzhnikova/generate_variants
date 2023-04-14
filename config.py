@@ -1,0 +1,2 @@
+connected=False
+conn=None
