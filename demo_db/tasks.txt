@@ -1,160 +1,155 @@
 Задание 1(простое)
 Выведите фамилии посетителей с именем PT_FIRST_NAME
-SELECT last_name FROM visitor WHERE first_name = ''PT_FIRST_NAME'';
+SELECT last_name FROM visitor WHERE first_name = PT_FIRST_NAME;
 
 Задание 2(простое)
 Выведите фамилию посетителя с visitor_id = PT_VISITOR_ID
-SELECT last_name FROM visitor WHERE visitor_id = ''PT_VISITOR_ID'';
+SELECT last_name FROM visitor WHERE visitor_id = PT_VISITOR_ID;
 
 Задание 3(простое)
 Выведите названия экспонатов, автором которых является PT_AUTHOR
-SELECT exhibit_name FROM exhibit WHERE author = ''PT_AUTHOR'';
+SELECT DISTINCT exhibit_name FROM exhibit WHERE author = PT_AUTHOR;
 
 Задание 4(простое)
 Выведите авторов экспонатов, у которых дата создания больше PT_YEAR_OF_CREATION
-SELECT author FROM exhibit WHERE year_of_creation > ''PT_YEAR_OF_CREATION''; 
+SELECT author FROM exhibit WHERE year_of_creation > PT_YEAR_OF_CREATION; 
 
 Задание 5(простое)
 Выведите фамилии посетителей с именем PT_FIRST_NAME или PT_FIRST_NAME
-SELECT last_name  FROM visitor WHERE first_name = ''PT_FIRST_NAME'' OR first_name = ''PT_FIRST_NAME'';
+SELECT last_name  FROM visitor WHERE first_name = PT_FIRST_NAME OR first_name = PT_FIRST_NAME;
 
 Задание 6(простое)
 Выведите названия экскурсий, ценой выше PT_PRICE, которые проводятся каким-либо гидом 
-SELECT excursion_name FROM excursion WHERE guide_id is NOT NULL AND price > ''PT_PRICE'';
+SELECT excursion_name FROM excursion WHERE guide_id is NOT NULL AND price > PT_PRICE;
 
 Задание 7(простое)
 Выведите названия экспонатов, которые созданы между PT_YEAR_OF_CREATION и PT_YEAR_OF_CREATION годами
-SELECT exhibit_name  FROM exhibit WHERE year_of_creation BETWEEN ''PT_YEAR_OF_CREATION'' AND ''PT_YEAR_OF_CREATION'';
+SELECT exhibit_name FROM exhibit WHERE year_of_creation BETWEEN PT_YEAR_OF_CREATION AND PT_YEAR_OF_CREATION;
 
 Задание 8(простое)
 Выведите имена первых PT_LIMIT посетителей
-SELECT first_name FROM visitor LIMIT ''PT_LIMIT'';
+SELECT first_name FROM visitor LIMIT PT_LIMIT;
 
 Задание 9(простое)
 Отсортируйте экскурсии в порядке PT_DESC цены и выведите первые PT_LIMIT названий экскурсий 
-SELECT excursion_name FROM excursion ORDER BY price ''PT_DESC'' LIMIT ''PT_LIMIT'';
+SELECT excursion_name FROM excursion ORDER BY price PT_DESC LIMIT PT_LIMIT;
 
 Задание 10(простое)
 Выведите первые PT_LIMIT названий залов в порядке PT_DESC названия, PT_DESC этажа и PT_DESC id музея
-SELECT hall_name FROM hall ORDER BY hall_name ''PT_DESC'', floor ''PT_DESC'', museum_id ''PT_DESC'' LIMIT ''PT_LIMIT'';
+SELECT hall_name FROM hall ORDER BY hall_name PT_DESC, floor PT_DESC, museum_id PT_DESC LIMIT PT_LIMIT;
 
 Задание 11(средней сложности)
 Выведите число экспонатов в зале c hall_id = PT_HALL_ID
-SELECT COUNT(exhibit_id) FROM exhibit WHERE hall_id = ''PT_HALL_ID'';
+SELECT COUNT(exhibit_id) FROM exhibit WHERE hall_id = PT_HALL_ID;
 
 Задание 12(средней сложности)
 Выведите количество экскурсий, проводящихся в период с PT_STARTS_ON_1 по PT_STARTS_ON_2.
-SELECT COUNT(excursion_id) FROM schedule WHERE starts_on BETWEEN ''PT_STARTS_ON_1'' AND ''PT_STARTS_ON_2''; 
+SELECT COUNT(excursion_id) FROM schedule WHERE starts_on BETWEEN PT_STARTS_ON_1 AND PT_STARTS_ON_2; 
 
 Задание 13(средней сложности)
 Выведите среднюю стоимость экскурсий в музее c museum_id = PT_MUSEUM_ID. Округлите до PT_ROUND знаков после запятой.
-SELECT ROUND(AVG(price), 'PT_ROUND') FROM excursion WHERE museum_id = ''PT_MUSEUM_ID'';
+SELECT ROUND(AVG(price), PT_ROUND) FROM excursion WHERE museum_id = PT_MUSEUM_ID;
 
 Задание 14(средней сложности)
 Выведите наибольшее visitor_id среди посетителей с именем PT_FIRST_NAME
-SELECT MAX(visitor_id) FROM visitor WHERE first_name  = ''PT_FIRST_NAME'' 
+SELECT MAX(visitor_id) FROM visitor WHERE first_name = PT_FIRST_NAME
 
 Задание 15(средней сложности)
 Выведите наименьшее visitor_id среди посетителей с именем PT_FIRST_NAME
-SELECT MIN(visitor_id) FROM visitor WHERE first_name  = ''PT_FIRST_NAME''
+SELECT MIN(visitor_id) FROM visitor WHERE first_name = PT_FIRST_NAME
 
 Задание 16(средней сложности)
 Выведите название музея в котором находится экспонат PT_EXHIBIT_NAME
 SELECT museum.museum_name FROM museum, hall, exhibit 
-WHERE museum.museum_id = hall.museum_id AND hall.hall_id = exhibit.hall_id AND exhibit.exhibit_name = ''PT_EXHIBIT_NAME'';
+WHERE museum.museum_id = hall.museum_id AND hall.hall_id = exhibit.hall_id AND exhibit.exhibit_name = PT_EXHIBIT_NAME;
 
 Задание 17(средней сложности)
 Выведите названия экскурсий, на которую записался посетитель с id = PT_VISITOR_ID
 SELECT excursion_name 
 FROM visitor_schedule, schedule, excursion
-WHERE excursion.excursion_id = schedule.excursion_id AND schedule.schedule_id = visitor_schedule.schedule_id  AND visitor_schedule.visitor_id = ''PT_VISITOR_ID''
+WHERE excursion.excursion_id = schedule.excursion_id AND schedule.schedule_id = visitor_schedule.schedule_id  AND visitor_schedule.visitor_id = PT_VISITOR_ID
 
 Задание 18(повышенной сложности)
 Выведите фамилии первых PT_LIMIT посетителей, которые записались на экскурсию PT_EXCURDION_NAME.
 SELECT visitor.last_name 
 FROM visitor, excursion, visitor_schedule, schedule 
-WHERE visitor.id = visitor_schedule.visitor_id AND visitor_schedule.schedule_id = schedule.id AND schedule.excursion_id = excursion.excursion_id AND excursion.exursion_name = ''PT_EXCURDION_NAME'' LIMIT ''PT_LIMIT'';
+WHERE visitor.id = visitor_schedule.visitor_id AND visitor_schedule.schedule_id = schedule.id AND schedule.excursion_id = excursion.excursion_id AND excursion.exursion_name = PT_EXCURDION_NAME LIMIT PT_LIMIT;
 
 Задание 19(повышенной сложности)
 Выведите дату и время начала самой первой экскурсии посетителя c visitor_id = PT_VISITOR_ID
 SELECT schedule.starts_on 
 FROM schedule, visitor_schedule 
-WHERE schedule.schedule_id = visitor_schedule.schedule_id AND visitor_schedule.visitor_id = ''PT_VISITOR_ID''
+WHERE schedule.schedule_id = visitor_schedule.schedule_id AND visitor_schedule.visitor_id = PT_VISITOR_ID
 ORDER BY schedule.starts_on LIMIT 1;
 
 Задание 20(повышенной сложности)
-Выведите количество людей, которые планируют пойти на экскурсию c id = PT_EXCURDION_ID между PT_STARTS_ON_1 и PT_STARTS_ON_2
+Выведите количество людей, которые планируют пойти на экскурсию c id = PT_EXCURSION_ID между PT_STARTS_ON_1 и PT_STARTS_ON_2
 SELECT COUNT(visitor_id) 
 FROM visitor_schedule, schedule, excursion 
 WHERE visitor_schedule.schedule_id = schedule.schedule_id  
-AND schedule.excursion_id =  excursion.excursion_id and excursion_id = ''PT_EXCURDION_ID''
-AND schedule.starts_on BETWEEN ''PT_STARTS_ON_1'' AND ''PT_STARTS_ON_2'' 
+AND schedule.excursion_id = excursion.excursion_id and excursion_id = PT_EXCURSION_ID
+AND schedule.starts_on BETWEEN PT_STARTS_ON_1 AND PT_STARTS_ON_2
 
 Задание 21(повышенной сложности)
 Выведите количество экспонатов, находящихся в каждом из залов музея, в котором проводится экскурсия PT_EXCURSION_NAME
 SELECT COUNT(exhibit.exhibit_id)
 FROM hall, exhibit, museum,  excursion
-WHERE exhibit.hall_id = hall.hall_id AND hall.museum_id = museum.museum_id AND museum.museum_id  = excursion.museum_id AND excursion.excursion_name = ''PT_EXCURSION_NAME''
+WHERE exhibit.hall_id = hall.hall_id AND hall.museum_id = museum.museum_id AND museum.museum_id  = excursion.museum_id AND excursion.excursion_name = PT_EXCURSION_NAME
 GROUP BY hall_name;
 
 Задание 22(средней сложности)
 Выведите фамилии посетителей мужского пола, имена которых начинаются на PT_LETTER
-SELECT visitor.last_name FROM visitor WHERE visitor.gender = ‘М’ AND visitor.first_name LIKE ''PT_LETTER%''
+SELECT visitor.last_name FROM visitor WHERE visitor.gender = 'М' AND visitor.first_name LIKE PT_LETTER%
 
 Задание 23(повышенной сложности)
 Выведите минимальную цену по которой проводились экскурсии PT_STARTS_ON
 SELECT MIN(excursion.price) 
 FROM excursion, schedule
 WHERE excursion.excursion_id = schedule.excursion_id 
-AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%''
+AND schedule.starts_on ::text LIKE PT_STARTS_ON%
 
 Задание 24(повышенной сложности)
 Выведите среднюю цену по которой проводились экскурсии PT_STARTS_ON. Округлите до двух знаков после запятой.
 SELECT ROUND(AVG(price),2) 
 FROM excursion, schedule
 WHERE excursion.excursion_id = schedule.excursion_id
-AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%'';
+AND schedule.starts_on ::text LIKE PT_STARTS_ON%;
 
-Задание 25(повышенной сложности)
-Выведите количество посетителей, которые посетили какой-либо музей PT_STARTS_ON после 13:00
-SELECT COUNT(visitor_id) 
-FROM visitor, visitor_schedule, schedule 
-WHERE visitor.id = visitor_schedule.visitor_id AND schedule.schedule_id = visitor_schedule.schedule_id AND schedule.starts_on >='{} 13:00' AND schedule.starts_on < ''PT_STARTS_ON''
 
 Задание 26(повышенной сложности)
 Для каждого посетителя с именем PT_FIRST_NAME выведите дату и время первой экскурсии
 SELECT DISTINCT ON(starts_on) starts_on
 FROM visitor, visitor_schedule, schedule 
-WHERE visitor.visitor_id = visitor_schedule.visitor_id AND schedule.schedule_id = visitor_schedule.schedule_id AND visitor.first_name = ''PT_FIRST_NAME''
+WHERE visitor.visitor_id = visitor_schedule.visitor_id AND schedule.schedule_id = visitor_schedule.schedule_id AND visitor.first_name = PT_FIRST_NAME
 ORDER  BY starts_on;
 
 Задание 27(повышенной сложности)
 Выведите id сеансов на которые PT_STARTS_ON записались больше 15 человек 
 SELECT schedule.id
 FROM visitor, visitor_schedule, schedule 
-WHERE visitor.visitor_id = visitor_schedule.visitor_id AND schedule.schedule_id = visitor_schedule.schedule_id AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%''
+WHERE visitor.visitor_id = visitor_schedule.visitor_id AND schedule.schedule_id = visitor_schedule.schedule_id AND schedule.starts_on ::text LIKE PT_STARTS_ON%
 GROUP BY schedule.schedule_id
 HAVING COUNT(visitor_id) > 15;
 
 Задание 28(средней сложности)
 Выведите названия всех экспонатов, год создания которых больше, чем год создания экспоната с exhibit_id = PT_EXHIBIT_ID
-SELECT exhibit_name FROM exhibit WHERE year_of_creation > (SELECT year_of_creation FROM exhibit WHERE exhibit_id = ''PT_EXHIBIT_ID'');
+SELECT exhibit_name FROM exhibit WHERE year_of_creation > (SELECT year_of_creation FROM exhibit WHERE exhibit_id = PT_EXHIBIT_ID);
 
 Задание 29(повышенной сложности)
 Выведите количество посетителей самой популярной (количество посетителей наибольшее) экскурсии PT_STARTS_ON
 SELECT MAX(visitor_count) 
 FROM( SELECT COUNT(visitor_id) AS visitor_count
            	FROM visitor_schedule, schedule 
-WHERE schedule.schedule_id = visitor_schedule.schedule_id AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%'' 
+WHERE schedule.schedule_id = visitor_schedule.schedule_id AND schedule.starts_on ::text LIKE PT_STARTS_ON%
 GROUP BY schedule_id;
 
 Задание 30(средней сложности)
 Выведите названия залов, где какой-либо из экспонатов сделан в стране PT_COUNTRY_OF_CREATION
-SELECT hall_name FROM hall WHERE hall_id = ANY(SELECT hall_id FROM exhibit WHERE country_of_creation = ''PT_COUNTRY_OF_CREATION'');
+SELECT hall_name FROM hall WHERE hall_id = ANY(SELECT hall_id FROM exhibit WHERE country_of_creation = PT_COUNTRY_OF_CREATION);
 
 Задание 31(средней сложности)
 Выведите названия залов где все экспонаты сделаны в PT_COUNTRY_OF_CREATION
-SELECT hall_name FROM hall WHERE hall_id = ALL(SELECT hall_id FROM exhibit WHERE country_of_creation = ''PT_COUNTRY_OF_CREATION'');
+SELECT hall_name FROM hall WHERE hall_id = ALL(SELECT hall_id FROM exhibit WHERE country_of_creation = PT_COUNTRY_OF_CREATION);
 
 Задание 32(повышенной сложности)
 Выведите количество мужчин, которые записались на экскурсии PT_STARTS_ON
@@ -162,7 +157,7 @@ SELECT COUNT(visitor_id)
 FROM visitor
 JOIN visitor_schedule using (visitor_id)
 JOIN schedule using (schedule_id)
-WHERE visitor.gender = 'М' AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%'';
+WHERE visitor.gender = 'М' AND schedule.starts_on ::text LIKE PT_STARTS_ON%;
 
 Задание 33(повышенной сложности)
 Выведите общую стоимость продажи билетов в каждом из музеев PT_STARTS_ON
@@ -170,5 +165,5 @@ SELECT SUM(price)
 FROM museum 
 LEFT JOIN (SELECT price, museum_id FROM excursion 
 		   JOIN schedule using (excursion_id)
-AND schedule.starts_on ::text LIKE ''PT_STARTS_ON%'') excursion using (museum_id) 
+AND schedule.starts_on ::text LIKE PT_STARTS_ON%) excursion using (museum_id) 
 GROUP BY museum_name;
