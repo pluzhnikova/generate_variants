@@ -90,12 +90,21 @@ class TemplateFrame(customtkinter.CTkFrame):
                      "На месте изменяемого значения укажите параметр.\n Например, SELECT * FROM t WHERE PT_FIRST_PARAM = 0")
 
         def insert(template_text, template_query, level):
-            query = "INSERT INTO template VALUES (nextval('template_seq'), '" + template_text + "', '" \
-                    + template_query + "', " + level + ")"
-            db_rows = self.run_query(query)
-            self.get_templates()
-            insert_template_window.destroy()
-            messagebox.showinfo('Info', f'Шаблон добавлен')
+            try:
+                query = "INSERT INTO template VALUES (nextval('template_seq'), '" + template_text + "', '" \
+                        + template_query + "', " + level + ")"
+                db_rows = self.run_query(query)
+                self.get_templates()
+                insert_template_window.destroy()
+                messagebox.showinfo('Info', f'Шаблон добавлен')
+            except:
+                template_query = template_query.replace("'", "''")
+                query = "INSERT INTO template VALUES (nextval('template_seq'), '" + template_text + "', '" \
+                        + template_query + "', " + level + ")"
+                db_rows = self.run_query(query)
+                self.get_templates()
+                insert_template_window.destroy()
+                messagebox.showinfo('Info', f'Шаблон добавлен')
 
         btn_upd = customtkinter.CTkButton(
             insert_template_window,
@@ -140,12 +149,21 @@ class TemplateFrame(customtkinter.CTkFrame):
             slider.pack(anchor=NW, padx=10, pady=10)
 
             def update(template_text, template_query, level, template_id):
-                query = "UPDATE template SET template_text = '" + f"{template_text}" + "', template_query = " + \
-                        "'{}'".format(template_query) + ", level = " + level + " WHERE template_id = " + template_id
-                db_rows = self.run_query(query)
-                self.get_templates()
-                update_template_window.destroy()
-                messagebox.showinfo('Info', f'Шаблон изменён')
+                try:
+                    query = "UPDATE template SET template_text = '" + f"{template_text}" + "', template_query = " + \
+                            "'{}'".format(template_query) + ", level = " + level + " WHERE template_id = " + template_id
+                    db_rows = self.run_query(query)
+                    self.get_templates()
+                    update_template_window.destroy()
+                    messagebox.showinfo('Info', f'Шаблон изменён')
+                except:
+                    template_query = template_query.replace("'", "''")
+                    query = "UPDATE template SET template_text = '" + f"{template_text}" + "', template_query = " + \
+                            "'{}'".format(template_query) + ", level = " + level + " WHERE template_id = " + template_id
+                    db_rows = self.run_query(query)
+                    self.get_templates()
+                    update_template_window.destroy()
+                    messagebox.showinfo('Info', f'Шаблон изменён')
 
             btn_upd = customtkinter.CTkButton(
                 update_template_window,

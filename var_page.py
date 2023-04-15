@@ -7,7 +7,7 @@ from psycopg2 import OperationalError, errorcodes, errors
 import config
 import pandas as pd
 from tkinter.filedialog import asksaveasfilename
-import atexit
+
 
 # Форма Варианты
 class VarFrame(customtkinter.CTkFrame):
@@ -44,7 +44,8 @@ class VarFrame(customtkinter.CTkFrame):
                 "is_after_percent:= false;			SELECT REGEXP_SUBSTR(var_query, '(PT_\S+)') into var_parametr;			"
                 "CONTINUE;		END IF;		"
                 "if is_before_percent THEN			var_query := regexp_replace(var_query, '%'||var_parametr, '''' || '%' || var_value || '''');			"
-                "is_before_percent:= false;		ELSE			var_query := regexp_replace(var_query, var_parametr, '''' || var_value || '''');		END IF;	"
+                "is_before_percent:= false;		ELSE	if var_value = 'DESC' or var_value = 'ASC' THEN	var_query := regexp_replace(var_query, var_parametr, var_value );"
+                "ELSE	var_query := regexp_replace(var_query, var_parametr, '''' || var_value || ''''); END IF; END IF;	"
                 "SELECT REGEXP_SUBSTR(var_query, '(PT_\S+)') into var_parametr;   "
                 "END LOOP;   "
                 "EXECUTE 'SELECT ARRAY('||var_query||');' into var_result;   "
@@ -188,6 +189,7 @@ class VarFrame(customtkinter.CTkFrame):
                 self.Combo1.set(f'{template_id}')
                 self.Combo2.set('Произвольная')
                 self.select_variants()
+
         gen_var_window.grid_columnconfigure(0, weight=1)
         gen_var_window.grid_columnconfigure(1, weight=4)
         gen_var_window.grid_rowconfigure(0, weight=1)
@@ -197,7 +199,7 @@ class VarFrame(customtkinter.CTkFrame):
         l1 = customtkinter.CTkLabel(gen_var_window, text="Выберите шаблон:")
         l2 = customtkinter.CTkLabel(gen_var_window, text="Число вариантов:")
         l2.grid(row=0, column=0, padx=20, pady=20, sticky=NSEW)
-        vcmd = (master.register(self.validate),
+        vcmd = (self.register(self.validate),
                 '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         entry1 = customtkinter.CTkEntry(gen_var_window, width=100, validate='all', validatecommand=vcmd)
         entry1.grid(row=0, column=1, padx=20, pady=20, sticky=NSEW)

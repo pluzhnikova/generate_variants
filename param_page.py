@@ -61,10 +61,11 @@ class ParamFrame(customtkinter.CTkFrame):
             entry2.pack(anchor=NW, padx=10, pady=10)
             entry2.insert(0, self.params_table.item(selected_item)["values"][2])
 
-            def update(parameter_name, parameter_query, parameter_id):
+            def update(parameter_name, parameter_query, parameter_id, selected_name):
                 try:
                     for child in self.params_table.get_children():
-                        if parameter_name in self.params_table.item(child)['values']:
+                        if parameter_name in self.params_table.item(child)['values'] \
+                                and parameter_name!=selected_name:
                             raise
                     try:
                         with config.conn as conn:
@@ -73,20 +74,24 @@ class ParamFrame(customtkinter.CTkFrame):
                                 result = cursor.fetchall()
                                 colnames = [desc[0] for desc in cursor.description]
                         if len(result) == 1 and len(colnames) == 1:
-                            if type(result[0][0]) is str:
-                                query = "UPDATE parameter SET parameter_name = '" + parameter_name + "', parameter_query = '" + parameter_query + "' WHERE parameter_id = " + parameter_id
-                                db_rows = self.run_query(query)
-                                self.get_params()
-                                update_parameter_window.destroy()
-                                messagebox.showinfo('Info', f'Параметер изменён')
-                            else:
-                                messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
-                                update_parameter_window.focus()
+                                try:
+                                    query = "UPDATE parameter SET parameter_name = '" + parameter_name + "', parameter_query = '" + parameter_query + "' WHERE parameter_id = " + parameter_id
+                                    db_rows = self.run_query(query)
+                                    self.get_params()
+                                    update_parameter_window.destroy()
+                                    messagebox.showinfo('Info', f'Параметер изменён')
+                                except:
+                                    parameter_query = parameter_query.replace("'", "''")
+                                    query = "UPDATE parameter SET parameter_name = '" + parameter_name + "', parameter_query = '" + parameter_query + "' WHERE parameter_id = " + parameter_id
+                                    db_rows = self.run_query(query)
+                                    self.get_params()
+                                    update_parameter_window.destroy()
+                                    messagebox.showinfo('Info', f'Параметер изменён')
                         else:
-                            messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
+                            messagebox.showinfo('Info', f'Запрос должен возвращать одно значение')
                             update_parameter_window.focus()
                     except:
-                        messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
+                        messagebox.showinfo('Info', f'Запрос должен возвращать одно значение')
                         update_parameter_window.focus()
                 except:
                     messagebox.showinfo('Info',
@@ -97,11 +102,13 @@ class ParamFrame(customtkinter.CTkFrame):
                 update_parameter_window,
                 text='Сохранить измененения',
                 command=lambda: update(str(entry1.get()), str(entry2.get()),
-                                       str(self.params_table.item(selected_item)["values"][0]))
+                                       str(self.params_table.item(selected_item)["values"][0]),
+                                       str(self.params_table.item(selected_item)["values"][1]))
             )
             btn_upd.pack(side=tk.BOTTOM, pady=20)
             update_parameter_window.bind('<Return>', lambda x: update(str(entry1.get()), str(entry2.get()),
-                                       str(self.params_table.item(selected_item)["values"][0])))
+                                       str(self.params_table.item(selected_item)["values"][0]),
+                                                                      str(self.params_table.item(selected_item)["values"][1])))
     def delete_parameter(self):
         selected_item = self.params_table.selection()
         if len(selected_item) == 0:
@@ -131,7 +138,7 @@ class ParamFrame(customtkinter.CTkFrame):
         l2.pack(anchor=NW, padx=10, pady=10)
         entry2 = customtkinter.CTkEntry(insert_parameter_window, width=800)
         entry2.pack(anchor=NW, padx=10, pady=10)
-        balloon.bind(entry2, "Запрос должен возвращать одно случайное строковое значение.\n"
+        balloon.bind(entry2, "Запрос должен возвращать одно случайное значение.\n"
                              "Параметр будет заменяться этим значением при генерации\n")
 
         def insert(parameter_name, parameter_query):
@@ -146,21 +153,26 @@ class ParamFrame(customtkinter.CTkFrame):
                             result = cursor.fetchall()
                             colnames = [desc[0] for desc in cursor.description]
                     if len(result) == 1 and len(colnames) == 1:
-                        if type(result[0][0]) is str:
-                            query = "INSERT INTO parameter VALUES (nextval('parameter_seq'), '" + parameter_name + "', '" \
-                                    + parameter_query + "')"
-                            db_rows = self.run_query(query)
-                            self.get_params()
-                            insert_parameter_window.destroy()
-                            messagebox.showinfo('Info', f'Параметер {parameter_name} добавлен')
-                        else:
-                            messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
-                            insert_parameter_window.focus()
+                            try:
+                                query = "INSERT INTO parameter VALUES (nextval('parameter_seq'), '" + parameter_name + "', '" \
+                                        + parameter_query + "')"
+                                db_rows = self.run_query(query)
+                                self.get_params()
+                                insert_parameter_window.destroy()
+                                messagebox.showinfo('Info', f'Параметер {parameter_name} добавлен')
+                            except:
+                                parameter_query = parameter_query.replace("'","''")
+                                query = "INSERT INTO parameter VALUES (nextval('parameter_seq'), '" + parameter_name + "', '" \
+                                        + parameter_query + "')"
+                                db_rows = self.run_query(query)
+                                self.get_params()
+                                insert_parameter_window.destroy()
+                                messagebox.showinfo('Info', f'Параметер {parameter_name} добавлен')
                     else:
-                        messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
+                        messagebox.showinfo('Info', f'Запрос должен возвращать одно значение')
                         insert_parameter_window.focus()
                 except:
-                    messagebox.showinfo('Info', f'Запрос должен возвращать одно строковое значение')
+                    messagebox.showinfo('Info', f'Запрос должен возвращать одно значение')
                     insert_parameter_window.focus()
             except:
                 messagebox.showinfo('Info',
