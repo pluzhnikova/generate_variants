@@ -118,14 +118,14 @@ SELECT hall_name FROM hall WHERE hall_id = ANY(SELECT hall_id FROM exhibit WHERE
 Сколько экспонатов сделано позже чем любая из работ PT_AUTHOR, даты создания которых известны?
 SELECT exhibit_name, year_of_creation FROM exhibit WHERE year_of_creation > ALL(SELECT year_of_creation FROM exhibit WHERE author = PT_AUTHOR AND year_of_creation IS NOT NULL)
 
-Задание 30(средней сложности)
+Задание 31(средней сложности)
 Выведите названия залов где все экспонаты сделаны в стране PT_COUNTRY_OF_CREATION
 SELECT hall_name FROM hall WHERE hall_id in (SELECT hall_id FROM exhibit GROUP BY hall_id, country_of_creation HAVING country_of_creation = PT_COUNTRY_OF_CREATION )
 
-Задание 31(повышенной сложности)
+Задание 32(повышенной сложности)
 Выведите количество мужчин, которые записались на экскурсии PT_STARTS_ON
 SELECT COUNT(visitor_id) FROM visitor JOIN visitor_schedule using (visitor_id) JOIN schedule using (schedule_id) WHERE visitor.gender = 'М' AND schedule.starts_on ::text LIKE PT_STARTS_ON%
 
-Задание 32(повышенной сложности)
+Задание 33(повышенной сложности)
 Выведите общую стоимость продажи билетов в каждом из музеев PT_STARTS_ON
 SELECT SUM(price) FROM museum LEFT JOIN (SELECT price, museum_id FROM excursion JOIN schedule using (excursion_id) AND schedule.starts_on ::text LIKE PT_STARTS_ON% ) excursion using (museum_id) GROUP BY museum_name;
