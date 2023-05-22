@@ -1,6 +1,7 @@
 import tkinter as tk
 import customtkinter
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 import psycopg2
 from psycopg2 import OperationalError, errorcodes, errors
